@@ -35,7 +35,7 @@
   template:
     src: etc/network/interfaces.d/device.j2
     dest: "{{ network_interfaces_interface_path }}/device-{{ item.device }}-{{ item.family | default('inet') }}"
-  with_items: network_interfaces_interfaces
+  with_items: "{{ network_interfaces_interfaces }}"
   register: network_interfaces_configuration_result
   tags:
     - configuration
@@ -73,11 +73,12 @@
     state: restarted
     arguments: "INTERFACE={{ item.0 }}"
   when: >
-    (0 != item.1 | selectattr('changed') | list | length)
-    and ((0 != item.1 | selectattr('item.auto', 'undefined') | list | length)
-      or (true in item.1 | selectattr('item.auto') | list)
+    (0 != {{ item.1 | selectattr('changed') | list | length }})
+    and ((0 != {{ item.1 | selectattr('item.auto', 'undefined') | list | length }})
+      or (item.1 | selectattr('item.auto'))
     )
-  with_items: network_interfaces_configuration_result.results | default([]) | groupby('item.device')
+  with_items:
+    - "{{ network_interfaces_configuration_result.results | default([]) | groupby('item.device') }}"
   tags:
     - configuration
     - network-interfaces
