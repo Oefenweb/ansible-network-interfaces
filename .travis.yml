@@ -42,7 +42,7 @@ script:
   - ansible-playbook -i tests/inventory tests/test.yml --syntax-check
 
   # Run the role/playbook with ansible-playbook.
-  - ansible-playbook -i tests/inventory tests/test.yml -vvvv
+  - ansible-playbook -i tests/inventory tests/test.yml -vvvv --diff
 
   # Run the role/playbook again, checking to make sure it's idempotent.
   - >
@@ -54,8 +54,4 @@ script:
   - if [ "$ANSIBLE_VERSION" = "latest" ]; then ansible-lint tests/test.yml || true; fi
 
 notifications:
-  email: false
-  hipchat:
-    rooms:
-      secure: ATB7pOOYjfsPaCfpZEbkmPDdX0Me0fy4ORCBe6bPdu5l7IlohXKRGm52fxU74tlQ5SBviwChz4gTcVkNiCY4i21ZLG6dmj8feBpNq+WFIvJmZyvmp0eqIPuTgskxOu3TKzTTyJXRhSZFOB0Kikl3OmEGx0g2DTf74kcl3LTRfZGYDzGUlyaM5HGeXZRVxDjAQnlNQiqjgKaD6B78mh0/BCHQmi5Ue+GyQSVtXdzNkoKeitdaukwqNjJCEyNtKjMRjPB6R0gY1lRADjTUe5lWvWO7HT+4e7n9pSlk30aQTnicWJJO7fq0ZKTcOY30eyA/hvHDxoJtW+24TX806WTM9XtiiBxv+PBfBKLIZyzhxBQWdVZgF+77PeMLqwnwe+kbDawaBQosrz/8vZ6kuI2UX2b43sI4ag1T8Lur/ddbGoQNLHIvlFH/QxMOZtBM0W2IQhtz9aKO6Z/pZURWxN6ebqgf6LsP01DQBCRR8rMs7GI++f8Eu4NQtzBROWnvRsOuQ2BtUQe5QL7dgfrFRfZZfjfJODrgOCkiANl9l5VglHV0RojScRP79JccZ+JM9uVEmqGDkBfTjSIm9e9Gcm9PC/gfxiXq0Wh16WSzYvvqhYIzCRnrakp6Tyy90BzW6W6QQRirsxvzPSLc7Wic1oKahZlme2cUzmE6Pd/j8xH5VwM=
-  webhooks: https://galaxy.ansible.com/api/v1/notifications/
+  email: true

@@ -1,6 +1,6 @@
 ## network-interfaces
 
-[![Build Status](https://travis-ci.org/Oefenweb/ansible-network-interfaces.svg?branch=master)](https://travis-ci.org/Oefenweb/ansible-network-interfaces) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-network--interfaces-blue.svg)](https://galaxy.ansible.com/tersmitten/network-interfaces)
+[![Build Status](https://travis-ci.org/chmduquesne/ansible-network-interfaces.svg?branch=master)](https://travis-ci.org/chmduquesne/ansible-network-interfaces) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-ansible--network--interfaces-blue.svg)](https://galaxy.ansible.com/chmduquesne/ansible-network-interfaces)
 
 Manage network interfaces in Debian-like systems.
 
@@ -15,20 +15,10 @@ None
 * `network_interfaces_manage_devices`: [required]: Whether all additional scripts should be deleted
 * `network_interfaces_interfaces`: [default: `[]`]: Network interfaces declarations
 * `network_interfaces_interfaces.{n}.device`: [required]: Device name
-* `network_interfaces_interfaces.{n}.auto`: [default: `true`]: Enable on boot
+* `network_interfaces_interfaces.{n}.triggers`: [default: `['auto']`]: When to enable|disable the interface
 * `network_interfaces_interfaces.{n}.family`: [default: `inet`]: Network type, eg. inet | inet6
 * `network_interfaces_interfaces.{n}.method`: [default: `dhcp`]: Method of the interface, eg. dhcp | static
-
-* `network_interfaces_interfaces.{n}.address`: [optional]: Address
-* `network_interfaces_interfaces.{n}.network`: [optional]: Network address
-* `network_interfaces_interfaces.{n}.netmask`: [optional]: Netmask
-* `network_interfaces_interfaces.{n}.broadcast`: [optional]: Broadcast address
-* `network_interfaces_interfaces.{n}.gateway`: [optional]: Default gateway
-* `network_interfaces_interfaces.{n}.nameservers`: [optional]: List of nameservers for this interface
-* `network_interfaces_interfaces.{n}.dns_search`: [optional]: Search list for host-name lookup
-* `network_interfaces_interfaces.{n}.mtu`: [optional]: MTU of the interface
-
-* `network_interfaces_interfaces.{n}.subnets`: [optional]: List of additional subnets, eg. ['192.168.123.0/24', '192.168.124.11/32']
+* `network_interfaces_interfaces.{n}.<arbitrary_option>`: Additional arbitrary option to the interface
 
 ##### Bridge
 
@@ -37,12 +27,14 @@ None
 * `network_interfaces_interfaces.{n}.bridge.stp`: [optional]: Turn spanning tree protocol on/off
 * `network_interfaces_interfaces.{n}.bridge.fd`: [optional]: Bridge forward delay
 * `network_interfaces_interfaces.{n}.bridge.maxwait`: [optional]: Maximum time to wait for the bridge ports to get to the forwarding status
-* `network_interfaces_interfaces.{n}.bridge.waitport`: [optional]: Maximum time to wait for the specified ports to become available 
+* `network_interfaces_interfaces.{n}.bridge.waitport`: [optional]: Maximum time to wait for the specified ports to become available
 
 ##### Inline hook scripts
 
 * `network_interfaces_interfaces.{n}.pre-up`: [optional, default: `[]`]: List of pre-up script lines
 * `network_interfaces_interfaces.{n}.up`: [optional, default: `[]`]: List of up script lines
+* `network_interfaces_interfaces.{n}.post-up`: [optional, default: `[]`]: List of post-up script lines
+* `network_interfaces_interfaces.{n}.pre-down`: [optional, default: `[]`]: List of pre-down script lines
 * `network_interfaces_interfaces.{n}.down`: [optional, default: `[]`]: List of down script lines
 * `network_interfaces_interfaces.{n}.post-down`: [optional, default: `[]`]: List of post-down script lines
 
@@ -53,31 +45,51 @@ None
 
 #### Example(s)
 
+##### Online.net Dedibox with dedicated ipv6 block
+
+```yaml
+# Assuming dhclient is configured with the right client id
+- hosts: dedibox
+  roles:
+    - chmduquesne.ansible-network-interfaces
+  vars:
+    network_interfaces_manage_devices: true
+    network_interfaces_interfaces:
+      - device: enp0s20
+        family: inet
+        method: dhcp
+      - device: enp0s20
+        family: inet6
+        method: dhcp
+        request_prefix: 1
+        up:
+          - "ip addr add {{ vault_inet6_address }}/{{ vault_inet6_netmask }} dev $IFACE"
+```
+
+
 ##### DigitalOcean droplet with private networking enabled
 
 ```yaml
 ---
 - hosts: all
   roles:
-    - network-interfaces
+    - chmduquesne.ansible-network-interfaces
   vars:
     network_interfaces_manage_devices: true
     network_interfaces_interfaces:
       - device: eth0
-        auto: true
+        triggers: ['auto']
         family: inet
         method: static
         address: 188.166.9.28
         netmask: 255.255.0.0
         gateway: 188.166.0.1
         mtu: 1500
-        nameservers:
-          - 8.8.8.8
-          - 8.8.4.4
+        dns-nameservers: "8.8.8.8 8.8.4.4"
         up:
           - 'ip addr add 10.18.0.8/16 dev eth0'
       - device: eth1
-        auto: true
+        triggers: ['auto']
         family: inet
         method: static
         address: 10.133.136.172
@@ -93,7 +105,4 @@ MIT
 * Andreas Reischuck
 * Mark van Driel
 * Mischa ter Smitten
-
-#### Feedback, bug-reports, requests, ...
-
-Are [welcome](https://github.com/Oefenweb/ansible-network-interfaces/issues)!
+* Christophe-Marie Duquesne

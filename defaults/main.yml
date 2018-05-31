@@ -4,10 +4,13 @@ network_interfaces_manage_devices: true
 
 network_interfaces_interfaces:
   - device: "{{ ansible_default_ipv4['interface'] }}"
-    auto: true
+    triggers:
+      - auto
     family: inet
     method: dhcp
     pre-up: []
     up: []
+    post-up: []
+    pre-down: []
     down: []
     post-down: []
