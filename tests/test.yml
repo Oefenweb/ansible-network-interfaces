@@ -5,3 +5,20 @@
   become: true
   roles:
     - ../../
+  vars:
+    network_interfaces_manage_devices: true
+    network_interfaces_interfaces:
+      - device: "{{ hostvars[inventory_hostname]['ansible_' + (ansible_interfaces | difference(['lo']) | sort | list | first)]['device'] }}"
+        triggers:
+          - auto
+        family: inet
+        method: dhcp
+        pre-up:
+          - 'sleep 2'
+      - device: "{{ hostvars[inventory_hostname]['ansible_' + (ansible_interfaces | difference(['lo']) | sort | list | last)]['device'] }}"
+        triggers:
+          - auto
+        family: inet
+        method: static
+        address: "{{ hostvars[inventory_hostname]['ansible_' + (ansible_interfaces | difference(['lo']) | sort | list | last)]['ipv4']['address'] }}"
+        netmask: "{{ hostvars[inventory_hostname]['ansible_' + (ansible_interfaces | difference(['lo']) | sort | list | last)]['ipv4']['netmask'] }}"
