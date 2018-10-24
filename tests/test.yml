@@ -12,6 +12,8 @@
         triggers:
           - auto
         family: inet
-        method: dhcp
+        method: static
+        address: "{{ hostvars[inventory_hostname]['ansible_' + (ansible_interfaces | difference(['lo']) | sort | list | first)]['ipv4']['address'] }}"
+        netmask: "{{ hostvars[inventory_hostname]['ansible_' + (ansible_interfaces | difference(['lo']) | sort | list | first)]['ipv4']['netmask'] }}"
         pre-up:
           - 'true'
