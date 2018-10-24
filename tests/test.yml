@@ -10,6 +10,7 @@
     network_interfaces_interfaces:
       - device: "{{ hostvars[inventory_hostname]['ansible_' + (ansible_interfaces | difference(['lo']) | sort | list | first)]['device'] }}"
         triggers:
+          - allow-hotplug
           - auto
         family: inet
         method: static
