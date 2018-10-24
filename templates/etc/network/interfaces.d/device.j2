@@ -10,7 +10,7 @@
 auto {{ item.device }}
 {% endif %}
 iface {{ item.device }} {{ item.family | default('inet', true) }} {{ item.method | default('dhcp', true) }}
-{% for key in item %}
+{% for key in item.keys() | sort %}
 {% if key not in special_keys %}
   {{ key }} {{ item[key] }}
 {% endif %}
