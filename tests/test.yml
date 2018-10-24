@@ -14,4 +14,4 @@
         family: inet
         method: dhcp
         pre-up:
-          - 'sleep 2'
+          - 'true'
