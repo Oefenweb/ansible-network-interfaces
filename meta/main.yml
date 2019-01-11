@@ -1,6 +1,7 @@
 # meta file for network-interfaces
 ---
 galaxy_info:
+  role_name: network_interfaces
   author: Andreas Reischuck
   company: Dresden Weekly
   description: Manage network interfaces in Debian-like systems
