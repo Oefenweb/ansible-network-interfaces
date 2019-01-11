@@ -1,6 +1,7 @@
 ## network-interfaces
 
-[![Build Status](https://travis-ci.org/chmduquesne/ansible-network-interfaces.svg?branch=master)](https://travis-ci.org/chmduquesne/ansible-network-interfaces) [![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-ansible--network--interfaces-blue.svg)](https://galaxy.ansible.com/chmduquesne/ansible-network-interfaces)
+[![Build Status](https://travis-ci.org/chmduquesne/ansible-network-interfaces.svg?branch=master)](https://travis-ci.org/chmduquesne/ansible-network-interfaces)
+[![Ansible Galaxy](http://img.shields.io/badge/ansible--galaxy-chmduquesne.network_interfaces-blue.svg)](https://galaxy.ansible.com/chmduquesne/network_interfaces)
 
 Manage network interfaces in Debian-like systems.
 
