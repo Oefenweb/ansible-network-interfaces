@@ -71,7 +71,6 @@
 - name: restart devices
   shell: >
     [ -n "$(ifquery --list --exclude=lo)" ] && udevadm settle
-    && ip addr flush {{ item.item.device }}
     && (ifdown {{ item.item.device }} --exclude=lo || true) && ifup {{ item.item.device }} --exclude=lo
   when:
     - item.changed
