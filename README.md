@@ -75,7 +75,7 @@ None
 ---
 - hosts: all
   roles:
-    - network-interfaces
+    - oefenweb.network-interfaces
   vars:
     network_interfaces_manage_devices: true
     network_interfaces_interfaces:
