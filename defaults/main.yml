@@ -3,7 +3,7 @@
 network_interfaces_manage_devices: true
 
 network_interfaces_interfaces:
-  - device: "{{ ansible_default_ipv4['interface'] }}"
+  - device: "{{ ansible_facts['default_ipv4']['interface'] }}"
     auto: true
     family: inet
     method: dhcp

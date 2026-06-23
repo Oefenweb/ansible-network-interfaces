@@ -1,4 +1,4 @@
-# {{ ansible_managed }}
+{{ ansible_managed | comment }}
 
 {% if item.auto | default(true) %}
 auto {{ item.device }}

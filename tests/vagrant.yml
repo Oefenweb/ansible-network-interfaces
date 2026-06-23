@@ -1,6 +1,7 @@
 # test file
 ---
-- hosts: all
+- name: converge
+  hosts: all
   remote_user: vagrant
   become: true
   roles:
@@ -8,15 +9,15 @@
   vars:
     network_interfaces_manage_devices: true
     network_interfaces_interfaces:
-      - device: "{{ hostvars[inventory_hostname]['ansible_' + (ansible_interfaces | difference(['lo']) | sort | list | first)]['device'] }}"
+      - device: "{{ hostvars[inventory_hostname]['ansible_facts'][(ansible_interfaces | difference(['lo']) | sort | list | first)]['device'] }}"
         auto: true
         family: inet
         method: dhcp
         pre-up:
           - 'sleep 2'
-      - device: "{{ hostvars[inventory_hostname]['ansible_' + (ansible_interfaces | difference(['lo']) | sort | list | last)]['device'] }}"
+      - device: "{{ hostvars[inventory_hostname]['ansible_facts'][(ansible_interfaces | difference(['lo']) | sort | list | last)]['device'] }}"
         auto: true
         family: inet
         method: static
-        address: "{{ hostvars[inventory_hostname]['ansible_' + (ansible_interfaces | difference(['lo']) | sort | list | last)]['ipv4']['address'] }}"
-        netmask: "{{ hostvars[inventory_hostname]['ansible_' + (ansible_interfaces | difference(['lo']) | sort | list | last)]['ipv4']['netmask'] }}"
+        address: "{{ hostvars[inventory_hostname]['ansible_facts'][(ansible_interfaces | difference(['lo']) | sort | list | last)]['ipv4']['address'] }}"
+        netmask: "{{ hostvars[inventory_hostname]['ansible_facts'][(ansible_interfaces | difference(['lo']) | sort | list | last)]['ipv4']['netmask'] }}"

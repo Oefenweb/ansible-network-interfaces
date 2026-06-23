@@ -18,7 +18,7 @@ None
 * `network_interfaces_interfaces.{n}.device`: [required]: Device name
 * `network_interfaces_interfaces.{n}.auto`: [default: `true`]: Enable on boot
 * `network_interfaces_interfaces.{n}.family`: [default: `inet`]: Network type, eg. inet | inet6
-* `network_interfaces_interfaces.{n}.method`: [default: `dhcp`]: Method of the interface, eg. dhcp | static
+* `network_interfaces_interfaces.{n}.method`: [default: `dhcp`]: Method of the interface, e.g. dhcp | static
 
 * `network_interfaces_interfaces.{n}.address`: [optional]: Address
 * `network_interfaces_interfaces.{n}.network`: [optional]: Network address
@@ -29,7 +29,7 @@ None
 * `network_interfaces_interfaces.{n}.dns_search`: [optional]: Search list for host-name lookup
 * `network_interfaces_interfaces.{n}.mtu`: [optional]: MTU of the interface
 
-* `network_interfaces_interfaces.{n}.subnets`: [optional]: List of additional subnets, eg. ['192.168.123.0/24', '192.168.124.11/32']
+* `network_interfaces_interfaces.{n}.subnets`: [optional]: List of additional subnets, e.g. ['192.168.123.0/24', '192.168.124.11/32']
 
 ##### Bridge
 
